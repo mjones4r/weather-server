@@ -24,7 +24,7 @@
 
   <script>
     const alertsContainer = document.getElementById('alerts-container');
-    const socket = new WebSocket('ws://localhost:3000'); // Replace with your WebSocket server URL
+    const socket = new WebSocket('172.16.25.93:4444'); // Replace with your WebSocket server URL
 
     // Event listener for WebSocket messages
     socket.addEventListener('message', function (event) {
