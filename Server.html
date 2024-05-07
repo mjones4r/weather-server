@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NWS Alerts Overlay</title>
+  <style>
+    /* Add your custom CSS styles here */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      padding: 20px;
+    }
+
+    .alert {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>NWS Alerts</h1>
+  <div id="alerts-container"></div>
+
+  <script>
+    const alertsContainer = document.getElementById('alerts-container');
+    const socket = new WebSocket('ws://localhost:3000'); // Replace with your WebSocket server URL
+
+    // Event listener for WebSocket messages
+    socket.addEventListener('message', function (event) {
+      const alerts = JSON.parse(event.data);
+      alertsContainer.innerHTML = ''; // Clear previous alerts
+      alerts.forEach(alert => {
+        const alertDiv = document.createElement('div');
+        alertDiv.classList.add('alert');
+        alertDiv.innerHTML = `
+          <h3>${alert.properties.event}</h3>
+          <p>${alert.properties.description}</p>
+          <p><strong>Effective Time:</strong> ${new Date(alert.properties.effectiveTime)}</p>
+          <p><strong>Expires Time:</strong> ${new Date(alert.properties.expiresTime)}</p>
+        `;
+        alertsContainer.appendChild(alertDiv);
+      });
+    });
+  </script>
+</body>
+</html>
